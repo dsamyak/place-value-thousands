@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-bgPrimary text-white font-body m-0 p-0 min-h-screen overflow-x-hidden;
+    background: linear-gradient(135deg, #0a0a2e 0%, #2d1b69 40%, #1a0a3e 70%, #0d1b3e 100%);
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-bgCard border border-white/10 rounded-2xl shadow-2xl;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 py-4 px-8 border-none rounded-xl font-display text-lg font-bold cursor-pointer transition-all duration-300 shadow-lg text-slate-900;
+    background: linear-gradient(135deg, #ffc107, #f9a825);
+  }
+  
+  .btn-primary:hover {
+    @apply transform -translate-y-1;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+  }
+  
+  .btn-primary:active {
+    @apply transform translate-y-0;
+  }
+}
+
+/* Animations */
+@keyframes digitFlyIn {
+  from { transform: translateY(-60px) scale(0.5); opacity: 0; }
+  to   { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+@keyframes floatAround {
+  0% { transform: translateY(100vh) rotate(0); opacity: 0; }
+  10% { opacity: 0.06; }
+  90% { opacity: 0.06; }
+  100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-80px); opacity: 0; }
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0.3); opacity: 0; }
+  50% { transform: scale(1.05); }
+  70% { transform: scale(0.95); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes wobble {
+  0%, 100% { transform: rotate(0); }
+  25% { transform: rotate(-5deg); }
+  75% { transform: rotate(5deg); }
+}
+
+/* Phase slide transition */
+.phase-enter        { transform: translateX(100%); opacity: 0; }
+.phase-enter-active { transform: translateX(0); opacity: 1; transition: 300ms ease-in-out; }
+.phase-exit         { transform: translateX(0); opacity: 1; }
+.phase-exit-active  { transform: translateX(-100%); opacity: 0; transition: 300ms ease-in-out; }
+
+.drop-hover {
+  outline: 2px dashed #ffc107;
+  background-color: rgba(255, 193, 7, 0.1);
+}
