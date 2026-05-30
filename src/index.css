@@ -211,6 +211,7 @@ body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; 
 .story-title { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; color: var(--gold); margin-bottom: 12px; }
 .story-text { color: var(--text-secondary); line-height: 1.7; font-size: 1rem; opacity: 0; transform: translateY(10px); transition: all 0.5s ease; }
 .story-text.revealed { opacity: 1; transform: translateY(0); }
+.key-term { color: var(--gold); font-weight: 700; font-family: var(--font-display); }
 .story-highlight { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 16px 0; padding: 12px 20px; background: rgba(255,193,7,0.1); border: 1px solid rgba(255,193,7,0.3); border-radius: var(--radius-md); opacity: 0; transform: scale(0.9); transition: all 0.4s ease; }
 .story-highlight.visible { opacity: 1; transform: scale(1); }
 .story-highlight-text { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--gold); }

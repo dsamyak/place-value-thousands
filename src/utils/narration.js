@@ -24,36 +24,47 @@ export function getStoryNarration(slideIndex) {
   switch (slideIndex) {
     case 0:
       return [
-        say("Wow! Said Sarah. Look at that number on the museum wall: three thousand, four hundred and seventy-two!"),
-        ask("But what does it mean? Asked Mike."),
+        say("Priya, Kai, and Liam were on a school trip to the Number Museum in Singapore."),
+        say("Look! gasped Priya, pointing at a giant glowing display."),
+        emphasize("That number is three thousand, four hundred and seventy-two!"),
+        ask("It's huge, said Kai. But what does each part mean?"),
       ];
     case 1:
       return [
-        say("A friendly robot guide appeared. Every digit lives in its own house!"),
-        emphasize("The house it lives in tells you its value."),
-        say("Four glowing houses appeared: Thousands, Hundreds, Tens, and Ones."),
+        say("A friendly robot guide rolled up to them."),
+        say("Welcome, explorers! Every digit in a number lives in its own house."),
+        emphasize("Four glowing houses appeared: Thousands, Hundreds, Tens, and Ones."),
+        say("The house a digit lives in tells you its value!"),
       ];
     case 2:
       return [
-        say("The digit three lives in the thousands house. So it is worth three thousand!"),
-        emphasize("And the four in the hundreds house is worth four hundred!"),
+        say("Let's break down three thousand, four hundred and seventy-two, said the robot."),
+        emphasize("The digit three lives in the Thousands house, so it's worth three thousand!"),
+        say("That's like three thousand mangoes from a Mumbai market! laughed Priya."),
+        emphasize("And the four in the Hundreds house is worth four hundred!"),
       ];
     case 3:
       return [
-        say("The seven in the tens house is worth seventy! And the two in the ones house is worth just two!"),
-        emphasize("Together: three thousand plus four hundred plus seventy plus two equals three thousand, four hundred and seventy-two!"),
+        say("The seven in the Tens house is worth seventy."),
+        say("And the two in the Ones house is worth just two!"),
+        cheer("So it all adds up! said Kai excitedly."),
+        emphasize("Three thousand plus four hundred plus seventy plus two equals three thousand, four hundred and seventy-two!"),
+        say("That's like counting cherry blossoms in Tokyo!"),
       ];
     case 4:
       return [
-        ask("Wait, said John. My top game score is four thousand and eight. What about the zeros?"),
+        ask("Wait, said Liam. My dad says our village in Nairobi has four thousand and eight people. What about the zeros?"),
         say("The robot smiled. Zero means nobody lives in that house."),
-        emphasize("But the house must still exist or all the other digits get confused!"),
+        emphasize("But the house must still exist, or all the other digits would get confused!"),
+        say("So zero is a placeholder! said Liam. It holds the spot even if it's empty!"),
       ];
     case 5:
       return [
-        cheer("I get it! Shouted Mike. My stamp collection has two thousand, three hundred and fifty stamps!"),
-        say("That is two thousands, three hundreds, five tens, and zero ones!"),
-        cheer("John and Sarah cheered. They had cracked the code of big numbers!"),
+        cheer("I get it! shouted Kai. The Tokyo Skytree is six hundred and thirty-four metres tall."),
+        say("That's six hundreds, three tens, and four ones!"),
+        say("And my school in Mumbai has two thousand, three hundred and fifty students, added Priya."),
+        emphasize("That's two thousands, three hundreds, five tens, and zero ones!"),
+        celebrate("The three friends cheered. They had cracked the code of big numbers!"),
       ];
     default:
       return [];

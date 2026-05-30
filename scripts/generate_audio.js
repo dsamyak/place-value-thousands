@@ -1,22 +1,22 @@
+import fetch from 'node-fetch';
 import fs from 'fs';
 import path from 'path';
-import fetch from 'node-fetch';
 import dotenv from 'dotenv';
-
 dotenv.config({ path: '.env.local' });
 
-const API_KEY = process.env.GOOGLE_TTS_API_KEY;
-const OUTPUT_DIR = path.resolve('public/assets/audio');
-const AUDIO_MAP_PATH = path.resolve('src/utils/audioMap.js');
+const VOICE_ID = 'Xb7hH8MSUJpSbSDYk0k2';
+const MODEL = 'eleven_multilingual_v2';
+const OUTPUT_DIR = 'public/assets/audio';
+const MAP_FILE = 'src/utils/audioMap.js';
 
 const VOICE_SETTINGS = {
-  statement:     { voiceName: 'en-US-Neural2-F', speakingRate: 0.90, pitch: 0.0 },
-  instruction:   { voiceName: 'en-US-Neural2-F', speakingRate: 0.88, pitch: 0.5 },
-  question:      { voiceName: 'en-US-Neural2-F', speakingRate: 0.85, pitch: 2.0 },
-  encouragement: { voiceName: 'en-US-Neural2-F', speakingRate: 1.00, pitch: 2.5 },
-  emphasis:      { voiceName: 'en-US-Neural2-F', speakingRate: 0.80, pitch: 0.0 },
-  thinking:      { voiceName: 'en-US-Neural2-F', speakingRate: 0.85, pitch: 1.0 },
-  celebration:   { voiceName: 'en-US-Neural2-F', speakingRate: 1.05, pitch: 3.0 },
+  statement: { stability: 0.75, similarity_boost: 0.85, style: 0.2 },
+  question: { stability: 0.55, similarity_boost: 0.80, style: 0.5 },
+  encouragement: { stability: 0.50, similarity_boost: 0.90, style: 0.8 },
+  emphasis: { stability: 0.85, similarity_boost: 0.90, style: 0.1 },
+  thinking: { stability: 0.65, similarity_boost: 0.80, style: 0.4 },
+  celebration: { stability: 0.40, similarity_boost: 0.95, style: 0.9 },
+  instruction: { stability: 0.75, similarity_boost: 0.85, style: 0.2 },
 };
 
 const phrases = [
@@ -26,13 +26,13 @@ const phrases = [
   // WONDER
   { text: "John just won a video game championship! His score was six thousand, two hundred and forty-eight points. But what does that number actually mean?", style: 'question' },
   { text: "What do those four digits really tell us? Let's find out!", style: 'thinking' },
-  // STORY panels
-  { text: "Wow! Said Sarah. Look at that number on the museum wall: three thousand, four hundred and seventy-two! But what does it mean? Asked Mike.", style: 'statement' },
-  { text: "A friendly robot guide appeared. Every digit lives in its own house! The house it lives in tells you its value. Four glowing houses appeared: Thousands, Hundreds, Tens, and Ones.", style: 'statement' },
-  { text: "The digit three lives in the thousands house. So it is worth three thousand! And the four in the hundreds house is worth four hundred!", style: 'emphasis' },
-  { text: "The seven in the tens house is worth seventy! And the two in the ones house is worth just two! Together: three thousand plus four hundred plus seventy plus two equals three thousand, four hundred and seventy-two!", style: 'emphasis' },
-  { text: "Wait, said John. My top game score is four thousand and eight. What about the zeros? The robot smiled. Zero means nobody lives in that house. But the house must still exist or all the other digits get confused!", style: 'question' },
-  { text: "I get it! Shouted Mike. My stamp collection has two thousand, three hundred and fifty stamps! That is two thousands, three hundreds, five tens, and zero ones! John and Sarah cheered. They had cracked the code of big numbers!", style: 'celebration' },
+  // STORY panels (globally referenced)
+  { text: "Priya, Kai, and Liam were on a school trip to the Number Museum in Singapore. Look! gasped Priya. That number is three thousand, four hundred and seventy-two! It's huge, said Kai. But what does each part mean?", style: 'statement' },
+  { text: "A friendly robot guide rolled up to them. Welcome, explorers! Every digit in a number lives in its own house. Four glowing houses appeared: Thousands, Hundreds, Tens, and Ones. The house a digit lives in tells you its value!", style: 'statement' },
+  { text: "Let's break down three thousand, four hundred and seventy-two, said the robot. The digit three lives in the Thousands house, so it's worth three thousand! That's like three thousand mangoes from a Mumbai market! laughed Priya. And the four in the Hundreds house is worth four hundred!", style: 'emphasis' },
+  { text: "The seven in the Tens house is worth seventy. And the two in the Ones house is worth just two! So it all adds up! said Kai excitedly. Three thousand plus four hundred plus seventy plus two equals three thousand, four hundred and seventy-two! That's like counting cherry blossoms in Tokyo!", style: 'emphasis' },
+  { text: "Wait, said Liam. My dad says our village in Nairobi has four thousand and eight people. What about the zeros? The robot smiled. Zero means nobody lives in that house. But the house must still exist, or all the other digits would get confused! So zero is a placeholder!", style: 'question' },
+  { text: "I get it! shouted Kai. The Tokyo Skytree is six hundred and thirty-four metres tall. That's six hundreds, three tens, and four ones! And my school in Mumbai has two thousand, three hundred and fifty students, added Priya. That's two thousands, three hundreds, five tens, and zero ones! The three friends cheered. They had cracked the code of big numbers!", style: 'celebration' },
   // STATION A
   { text: "Welcome to the Build the Number station! Use base-ten blocks to build the number shown.", style: 'instruction' },
   { text: "Drag the thousands cubes, hundreds flats, tens rods, and ones units into the right columns!", style: 'instruction' },
@@ -53,71 +53,57 @@ const phrases = [
   { text: "Pick your favourite big number and tell me how many thousands, hundreds, tens, and ones it has.", style: 'question' },
 ];
 
-async function synthesize(text, style) {
-  const settings = VOICE_SETTINGS[style] || VOICE_SETTINGS.statement;
-  const url = `https://texttospeech.googleapis.com/v1/text:synthesize?key=${API_KEY}`;
-  const body = {
-    input: { text },
-    voice: { languageCode: 'en-US', name: settings.voiceName },
-    audioConfig: {
-      audioEncoding: 'MP3',
-      speakingRate: settings.speakingRate,
-      pitch: settings.pitch,
-    },
-  };
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  });
-  const data = await res.json();
-  if (!data.audioContent) throw new Error(`TTS failed for: ${text.slice(0, 40)}…`);
-  return Buffer.from(data.audioContent, 'base64');
-}
 
-function textToFilename(text, index) {
-  const slug = text
-    .toLowerCase()
-    .replace(/[^a-z0-9 ]/g, '')
-    .replace(/\s+/g, '_')
-    .slice(0, 40);
-  return `audio_${slug}_${index}.mp3`;
-}
+// Main generation loop
+async function generate() {
+  fs.mkdirSync(OUTPUT_DIR, { recursive: true });
+  const audioMap = {};
 
-async function main() {
-  if (!fs.existsSync(OUTPUT_DIR)) fs.mkdirSync(OUTPUT_DIR, { recursive: true });
-  const audioMapEntries = [];
-
-  for (let i = 0; i < phrases.length; i++) {
-    const { text, style } = phrases[i];
-    const filename = textToFilename(text, i);
+  for (const [i, { text, style }] of phrases.entries()) {
+    const slug = text.toLowerCase().replace(/[^a-z0-9]+/g, '_').slice(0, 40);
+    const filename = `audio_${slug}_${i}.mp3`;
     const filepath = path.join(OUTPUT_DIR, filename);
-    console.log(`[${i+1}/${phrases.length}] Generating: ${filename}`);
-    
-    // We mock actual Google TTS generation if API key is dummy
-    if (API_KEY === 'dummy_key_for_now' || !API_KEY) {
-      console.log('Skipping actual TTS API call (no valid key). Writing empty file.');
-      fs.writeFileSync(filepath, '');
-    } else {
-      const buffer = await synthesize(text, style);
-      fs.writeFileSync(filepath, buffer);
+
+    if (fs.existsSync(filepath)) {
+      console.log(`[SKIP] ${filename}`);
+      audioMap[text] = `/assets/audio/${filename}`;
+      continue;
     }
-    
-    audioMapEntries.push(`  ${JSON.stringify(text)}: '/assets/audio/${filename}'`);
-    await new Promise(r => setTimeout(r, 300)); // Rate limit
+
+    const res = await fetch(
+      `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`,
+      {
+        method: 'POST',
+        headers: {
+          'xi-api-key': process.env.VITE_ELEVENLABS_API_KEY,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          text,
+          model_id: MODEL,
+          voice_settings: VOICE_SETTINGS[style],
+        }),
+      }
+    );
+
+    if (!res.ok) {
+      console.error(`[ERROR] ${text}: ${res.status}`);
+      continue;
+    }
+
+    const buffer = Buffer.from(await res.arrayBuffer());
+    fs.writeFileSync(filepath, buffer);
+    audioMap[text] = `/assets/audio/${filename}`;
+    console.log(`[OK] ${filename}`);
   }
 
-  const mapContent = `// AUTO-GENERATED by scripts/generate_audio.js
-// Do NOT edit manually. Re-run the script after changing phrases.
-// Voice: en-US-Neural2-F (Google Cloud TTS)
-
-export const audioMap = {
-${audioMapEntries.join(',\n')}
-};
+  // Write audioMap.js
+  const mapContent = `// AUTO-GENERATED — do not edit manually
+// Run: node scripts/generate_audio.js
+export const audioMap = ${JSON.stringify(audioMap, null, 2)};
 `;
-  fs.writeFileSync(AUDIO_MAP_PATH, mapContent);
-  console.log(`\n✅ Done! Generated ${phrases.length} audio files.`);
-  console.log(`✅ audioMap.js written to ${AUDIO_MAP_PATH}`);
+  fs.writeFileSync(MAP_FILE, mapContent);
+  console.log(`\naudioMap.js written with ${Object.keys(audioMap).length} entries.`);
 }
 
-main().catch(console.error);
+generate().catch(console.error);

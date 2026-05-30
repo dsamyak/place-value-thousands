@@ -3,17 +3,17 @@ import { narrate, stopNarration, preloadNarration } from '../utils/audio';
 import { getStoryNarration } from '../utils/narration';
 import { storyPanels } from '../data/storyContent';
 
-const STORY_SLIDES = storyPanels.map((panel, idx) => ({
+const STORY_SLIDES = storyPanels.map((panel) => ({
   title: panel.title,
-  text: panel.screenText.replace(/<[^>]+>/g, ''), // strip HTML for simple text
+  html: panel.screenText,
   highlight: panel.keyTerms[0] || "",
-  mascotText: panel.index === 0 ? "Let's explore! 🏛️" :
+  mascotText: panel.index === 0 ? "Welcome to the museum! 🏛️" :
               panel.index === 1 ? "Meet the houses! 🏠" :
               panel.index === 2 ? "Big numbers! 🔢" :
               panel.index === 3 ? "Putting it together! ➕" :
               panel.index === 4 ? "Zero is important! 0️⃣" : "You did it! 🎉",
   pvChart: panel.pvChartState,
-  bgImage: `linear-gradient(135deg, hsl(${idx * 40}, 70%, 50%), hsl(${idx * 40 + 40}, 70%, 30%))`
+  image: panel.image,
 }));
 
 export default function StoryPhase({ onComplete, audioEnabled }) {
@@ -74,32 +74,52 @@ export default function StoryPhase({ onComplete, audioEnabled }) {
         <span className="story-progress-label">{slide + 1} / {STORY_SLIDES.length}</span>
       </div>
       <div className={`story-card ${anim ? 'flipping' : ''}`}>
-        <div className="story-image-section" style={{ background: s.bgImage, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          
-          <div style={{ display: 'flex', gap: '8px', zIndex: 10, background: 'rgba(0,0,0,0.4)', padding: '16px', borderRadius: '12px' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 60 }}>
-              <div style={{ fontSize: '0.7rem', color: '#ffb74d', fontWeight: 'bold' }}>TH</div>
-              <div style={{ fontSize: '2rem', color: 'white', fontWeight: 'bold' }}>{s.pvChart.th || '-'}</div>
+        <div className="story-image-section" style={{ position: 'relative' }}>
+          {/* Story illustration */}
+          <img
+            src={s.image}
+            alt={s.title}
+            className="story-image"
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
+
+          {/* PV Chart overlay — only when digits are being revealed */}
+          {(s.pvChart.th !== null || s.pvChart.h !== null || s.pvChart.t !== null || s.pvChart.o !== null) && (
+            <div style={{
+              position: 'absolute', bottom: 12, left: '50%', transform: 'translateX(-50%)',
+              display: 'flex', gap: '8px', zIndex: 10,
+              background: 'rgba(0,0,0,0.6)', padding: '10px 16px', borderRadius: '12px',
+              backdropFilter: 'blur(8px)',
+            }}>
+              {[
+                { label: 'TH', value: s.pvChart.th, color: '#ffb74d' },
+                { label: 'H', value: s.pvChart.h, color: '#81c784' },
+                { label: 'T', value: s.pvChart.t, color: '#4fc3f7' },
+                { label: 'O', value: s.pvChart.o, color: '#e57373' },
+              ].map((col) => (
+                <div key={col.label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 48 }}>
+                  <div style={{ fontSize: '0.6rem', color: col.color, fontWeight: 'bold' }}>{col.label}</div>
+                  <div style={{
+                    fontSize: '1.4rem', color: col.value !== null ? 'white' : 'rgba(255,255,255,0.25)',
+                    fontWeight: 'bold',
+                    transition: 'all 0.4s ease',
+                    transform: col.value !== null ? 'scale(1)' : 'scale(0.7)',
+                  }}>
+                    {col.value !== null ? col.value : '–'}
+                  </div>
+                </div>
+              ))}
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 60 }}>
-              <div style={{ fontSize: '0.7rem', color: '#81c784', fontWeight: 'bold' }}>H</div>
-              <div style={{ fontSize: '2rem', color: 'white', fontWeight: 'bold' }}>{s.pvChart.h || '-'}</div>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 60 }}>
-              <div style={{ fontSize: '0.7rem', color: '#4fc3f7', fontWeight: 'bold' }}>T</div>
-              <div style={{ fontSize: '2rem', color: 'white', fontWeight: 'bold' }}>{s.pvChart.t || '-'}</div>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 60 }}>
-              <div style={{ fontSize: '0.7rem', color: '#e57373', fontWeight: 'bold' }}>O</div>
-              <div style={{ fontSize: '2rem', color: 'white', fontWeight: 'bold' }}>{s.pvChart.o || '-'}</div>
-            </div>
-          </div>
-          
+          )}
+
           <div className="story-image-overlay" />
         </div>
         <div className="story-text-section">
           <h2 className="story-title">{s.title}</h2>
-          <p className={`story-text ${textVis ? 'revealed' : ''}`}>{s.text}</p>
+          <div
+            className={`story-text ${textVis ? 'revealed' : ''}`}
+            dangerouslySetInnerHTML={{ __html: s.html }}
+          />
           <div className={`story-highlight ${hlVis ? 'visible' : ''}`}>
             <span>✨</span><span className="story-highlight-text">{s.highlight}</span><span>✨</span>
           </div>
