@@ -7,7 +7,7 @@ function sendJson(res, status, data) {
 }
 
 export async function ttsHandler(req, res) {
-  const { text, voiceName = 'en-US-Neural2-F', speakingRate = 0.9, pitch = 1.0 } = req.body || {};
+  const { text, voiceName = 'en-US-Journey-F', speakingRate = 1.0, pitch = 1.0 } = req.body || {};
 
   if (!text || text.length > 500) {
     return sendJson(res, 400, { error: 'Invalid text' });

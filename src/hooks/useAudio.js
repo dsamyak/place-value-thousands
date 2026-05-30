@@ -18,7 +18,7 @@ export function useAudio(audioEnabled) {
       const res = await fetch('/api/google-tts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text, speakingRate: 0.9, pitch: 1.0 }),
+        body: JSON.stringify({ text, speakingRate: 1.0, pitch: 1.0 }),
       });
       const data = await res.json();
       if (data.audioContent) {
