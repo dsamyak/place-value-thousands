@@ -24,10 +24,10 @@ export function getStoryNarration(slideIndex) {
   switch (slideIndex) {
     case 0:
       return [
-        say("Priya, Kai, and Liam were on a school trip to the Number Museum in Singapore."),
-        say("Look! gasped Priya, pointing at a giant glowing display."),
+        say("Sarah, Mike, and John were on a school trip to the Science Museum in Chicago."),
+        say("Look! gasped Sarah, pointing at a giant glowing display."),
         emphasize("That number is three thousand, four hundred and seventy-two!"),
-        ask("It's huge, said Kai. But what does each part mean?"),
+        ask("It's huge, said Mike. But what does each part mean?"),
       ];
     case 1:
       return [
@@ -40,29 +40,29 @@ export function getStoryNarration(slideIndex) {
       return [
         say("Let's break down three thousand, four hundred and seventy-two, said the robot."),
         emphasize("The digit three lives in the Thousands house, so it's worth three thousand!"),
-        say("That's like three thousand mangoes from a Mumbai market! laughed Priya."),
+        say("That's like three thousand apples from a New York market! laughed Sarah."),
         emphasize("And the four in the Hundreds house is worth four hundred!"),
       ];
     case 3:
       return [
         say("The seven in the Tens house is worth seventy."),
         say("And the two in the Ones house is worth just two!"),
-        cheer("So it all adds up! said Kai excitedly."),
+        cheer("So it all adds up! said Mike excitedly."),
         emphasize("Three thousand plus four hundred plus seventy plus two equals three thousand, four hundred and seventy-two!"),
-        say("That's like counting cherry blossoms in Tokyo!"),
+        say("That's like counting apple trees in Washington!"),
       ];
     case 4:
       return [
-        ask("Wait, said Liam. My dad says our village in Nairobi has four thousand and eight people. What about the zeros?"),
+        ask("Wait, said John. My dad says our town in Texas has four thousand and eight people. What about the zeros?"),
         say("The robot smiled. Zero means nobody lives in that house."),
         emphasize("But the house must still exist, or all the other digits would get confused!"),
-        say("So zero is a placeholder! said Liam. It holds the spot even if it's empty!"),
+        say("So zero is a placeholder! said John. It holds the spot even if it's empty!"),
       ];
     case 5:
       return [
-        cheer("I get it! shouted Kai. The Tokyo Skytree is six hundred and thirty-four metres tall."),
+        cheer("I get it! shouted Mike. A skyscraper in Chicago is six hundred and thirty-four feet tall."),
         say("That's six hundreds, three tens, and four ones!"),
-        say("And my school in Mumbai has two thousand, three hundred and fifty students, added Priya."),
+        say("And my school in Boston has two thousand, three hundred and fifty students, added Sarah."),
         emphasize("That's two thousands, three hundreds, five tens, and zero ones!"),
         celebrate("The three friends cheered. They had cracked the code of big numbers!"),
       ];

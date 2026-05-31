@@ -2,10 +2,10 @@ export const storyPanels = [
   {
     index: 0,
     title: "The Number Museum",
-    screenText: `Priya, Kai, and Liam were on a school trip to the <span class="key-term">Number Museum</span> in Singapore.<br/><br/>"Look!" gasped Priya, pointing at a giant glowing display. "That number is <span class="key-term">3,472</span>!"<br/>"It's huge," said Kai. "But what does each part mean?"`,
-    narrationScript: "Priya, Kai, and Liam were on a school trip to the Number Museum in Singapore. Look! gasped Priya, pointing at a giant glowing display. That number is three thousand, four hundred and seventy-two! It's huge, said Kai. But what does each part mean?",
+    screenText: `Sarah, Mike, and John were on a school trip to the <span class="key-term">Science Museum</span> in Chicago.<br/><br/>"Look!" gasped Sarah, pointing at a giant glowing display. "That number is <span class="key-term">3,472</span>!"<br/>"It's huge," said Mike. "But what does each part mean?"`,
+    narrationScript: "Sarah, Mike, and John were on a school trip to the Science Museum in Chicago. Look! gasped Sarah, pointing at a giant glowing display. That number is three thousand, four hundred and seventy-two! It's huge, said Mike. But what does each part mean?",
     image: "/images/story_0.png",
-    keyTerms: ["3,472", "Number Museum"],
+    keyTerms: ["3,472", "Science Museum"],
     pvChartState: { th: null, h: null, t: null, o: null }
   },
   {
@@ -20,8 +20,8 @@ export const storyPanels = [
   {
     index: 2,
     title: "Thousands & Hundreds",
-    screenText: `"Let's break down <span class="key-term">3,472</span>," said the robot.<br/><br/>"The digit <span class="key-term">3</span> lives in the Thousands house — so it's worth <span class="key-term">3,000</span>!"<br/>"That's like three thousand mangoes from a Mumbai market!" laughed Priya.<br/><br/>"And the <span class="key-term">4</span> in the Hundreds house is worth <span class="key-term">400</span>!"`,
-    narrationScript: "Let's break down three thousand four hundred and seventy-two, said the robot. The digit 3 lives in the Thousands house, so it's worth three thousand! That's like three thousand mangoes from a Mumbai market! laughed Priya. And the 4 in the Hundreds house is worth four hundred!",
+    screenText: `"Let's break down <span class="key-term">3,472</span>," said the robot.<br/><br/>"The digit <span class="key-term">3</span> lives in the Thousands house — so it's worth <span class="key-term">3,000</span>!"<br/>"That's like three thousand apples from a New York market!" laughed Sarah.<br/><br/>"And the <span class="key-term">4</span> in the Hundreds house is worth <span class="key-term">400</span>!"`,
+    narrationScript: "Let's break down three thousand four hundred and seventy-two, said the robot. The digit 3 lives in the Thousands house, so it's worth three thousand! That's like three thousand apples from a New York market! laughed Sarah. And the 4 in the Hundreds house is worth four hundred!",
     image: "/images/story_2.png",
     keyTerms: ["3,000", "400"],
     pvChartState: { th: '3', h: '4', t: null, o: null }
@@ -29,8 +29,8 @@ export const storyPanels = [
   {
     index: 3,
     title: "Tens & Ones",
-    screenText: `"The <span class="key-term">7</span> in the Tens house is worth <span class="key-term">70</span>," continued the robot.<br/>"And the <span class="key-term">2</span> in the Ones house is worth just <span class="key-term">2</span>!"<br/><br/>"So it all adds up!" said Kai excitedly.<br/><span class="key-term">3,000 + 400 + 70 + 2 = 3,472</span> ✨<br/>"That's like counting cherry blossoms in Tokyo!"`,
-    narrationScript: "The 7 in the Tens house is worth seventy, continued the robot. And the 2 in the Ones house is worth just two! So it all adds up! said Kai excitedly. Three thousand plus four hundred plus seventy plus two equals three thousand, four hundred and seventy-two! That's like counting cherry blossoms in Tokyo!",
+    screenText: `"The <span class="key-term">7</span> in the Tens house is worth <span class="key-term">70</span>," continued the robot.<br/>"And the <span class="key-term">2</span> in the Ones house is worth just <span class="key-term">2</span>!"<br/><br/>"So it all adds up!" said Mike excitedly.<br/><span class="key-term">3,000 + 400 + 70 + 2 = 3,472</span> ✨<br/>"That's like counting apple trees in Washington!"`,
+    narrationScript: "The 7 in the Tens house is worth seventy, continued the robot. And the 2 in the Ones house is worth just two! So it all adds up! said Mike excitedly. Three thousand plus four hundred plus seventy plus two equals three thousand, four hundred and seventy-two! That's like counting apple trees in Washington!",
     image: "/images/story_3.png",
     keyTerms: ["70", "2", "3,000 + 400 + 70 + 2"],
     pvChartState: { th: '3', h: '4', t: '7', o: '2' }
@@ -38,8 +38,8 @@ export const storyPanels = [
   {
     index: 4,
     title: "The Zero Mystery",
-    screenText: `"Wait," said Liam. "My dad says our village in Nairobi has <span class="key-term">4,008</span> people. What about the zeros?"<br/><br/>The robot smiled. "Zero means <span class="key-term">nobody lives in that house</span>. But the house must still EXIST — or all the other digits would get confused!"<br/><br/>"So zero is a placeholder!" said Liam. "It holds the spot even if it's empty!"`,
-    narrationScript: "Wait, said Liam. My dad says our village in Nairobi has four thousand and eight people. What about the zeros? The robot smiled. Zero means nobody lives in that house. But the house must still exist, or all the other digits would get confused! So zero is a placeholder! said Liam. It holds the spot even if it's empty!",
+    screenText: `"Wait," said John. "My dad says our town in Texas has <span class="key-term">4,008</span> people. What about the zeros?"<br/><br/>The robot smiled. "Zero means <span class="key-term">nobody lives in that house</span>. But the house must still EXIST — or all the other digits would get confused!"<br/><br/>"So zero is a placeholder!" said John. "It holds the spot even if it's empty!"`,
+    narrationScript: "Wait, said John. My dad says our town in Texas has four thousand and eight people. What about the zeros? The robot smiled. Zero means nobody lives in that house. But the house must still exist, or all the other digits would get confused! So zero is a placeholder! said John. It holds the spot even if it's empty!",
     image: "/images/story_4.png",
     keyTerms: ["4,008", "placeholder"],
     pvChartState: { th: '4', h: '0', t: '0', o: '8' }
@@ -47,8 +47,8 @@ export const storyPanels = [
   {
     index: 5,
     title: "Cracking the Code",
-    screenText: `"I get it!" shouted Kai. "The Tokyo Skytree is <span class="key-term">634</span> metres tall — that's 6 hundreds, 3 tens, and 4 ones!"<br/><br/>"And my school in Mumbai has <span class="key-term">2,350</span> students," added Priya. "That's <span class="key-term">2 thousands, 3 hundreds, 5 tens, and 0 ones</span>!"<br/><br/>The three friends cheered — they had cracked the code of BIG numbers! 🎉`,
-    narrationScript: "I get it! shouted Kai. The Tokyo Skytree is six hundred and thirty-four metres tall. That's 6 hundreds, 3 tens, and 4 ones! And my school in Mumbai has two thousand, three hundred and fifty students, added Priya. That's 2 thousands, 3 hundreds, 5 tens, and 0 ones! The three friends cheered. They had cracked the code of big numbers!",
+    screenText: `"I get it!" shouted Mike. "A skyscraper in Chicago is <span class="key-term">634</span> feet tall — that's 6 hundreds, 3 tens, and 4 ones!"<br/><br/>"And my school in Boston has <span class="key-term">2,350</span> students," added Sarah. "That's <span class="key-term">2 thousands, 3 hundreds, 5 tens, and 0 ones</span>!"<br/><br/>The three friends cheered — they had cracked the code of BIG numbers! 🎉`,
+    narrationScript: "I get it! shouted Mike. A skyscraper in Chicago is six hundred and thirty-four feet tall. That's 6 hundreds, 3 tens, and 4 ones! And my school in Boston has two thousand, three hundred and fifty students, added Sarah. That's 2 thousands, 3 hundreds, 5 tens, and 0 ones! The three friends cheered. They had cracked the code of big numbers!",
     image: "/images/story_5.png",
     keyTerms: ["2 thousands, 3 hundreds, 5 tens, and 0 ones"],
     pvChartState: { th: '2', h: '3', t: '5', o: '0' }

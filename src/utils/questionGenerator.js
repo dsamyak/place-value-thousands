@@ -5,12 +5,18 @@ import { WORLD_CONFIG } from '../data/worldConfig';
 const GLOBAL_NAMES = ['John', 'Sarah', 'Mike', 'Emma', 'Liam', 'Aisha', 'Carlos', 'Mei'];
 
 const CONTEXT_TEMPLATES = [
-  (name, num, place) => `${name}'s town has a population of ${num.toLocaleString()} people. How many ${place} are in this number?`,
-  (name, num, place) => `${name} ran ${num.toLocaleString()} steps this month! What is the value of the ${place} digit?`,
-  (name, num, place) => `${name}'s school library has ${num.toLocaleString()} books. Which digit is in the ${place} place?`,
-  (name, num, place) => `${name} scored ${num.toLocaleString()} points in a game. What is the ${place} digit worth?`,
-  (name, num, place) => `A mountain is ${num.toLocaleString()} metres tall. ${name} wants to know: what is the value of the ${place} digit?`,
+  (name, num, place) => `${name}'s town has a population of ${num.toLocaleString()} people. What is the digit in the ${place} place?`,
+  (name, num, place) => `${name} ran ${num.toLocaleString()} steps this month! Which digit is in the ${place} place?`,
+  (name, num, place) => `${name}'s school library has ${num.toLocaleString()} books. What digit sits in the ${place} place?`,
+  (name, num, place) => `${name} scored ${num.toLocaleString()} points in a game. What is the digit in the ${place} place?`,
+  (name, num, place) => `A mountain is ${num.toLocaleString()} feet tall. ${name} wants to know: which digit is in the ${place} place?`,
 ];
+
+function getValidPositions(num) {
+  if (num >= 1000) return ['thousands', 'hundreds', 'tens', 'ones'];
+  if (num >= 100) return ['hundreds', 'tens', 'ones'];
+  return ['tens', 'ones'];
+}
 
 function pickName(names, usedCount) {
   const eligible = names.filter(n => (usedCount[n] || 0) < 2);
@@ -35,21 +41,36 @@ function getFreshNumber(world, usedNumbers) {
 }
 
 function genValueDistractors(correctVal, num, position) {
-  const positions = ['thousands', 'hundreds', 'tens', 'ones'];
+  const positions = getValidPositions(num);
   const digit = getDigitAt(num, position);
   const distractors = new Set();
 
   for (const p of positions) {
     if (p !== position) {
-      const val = digit * (p === 'thousands' ? 1000 : p === 'hundreds' ? 100 : p === 'tens' ? 10 : 1);
+      const val = getDigitAt(num, p) * (p === 'thousands' ? 1000 : p === 'hundreds' ? 100 : p === 'tens' ? 10 : 1);
       if (val !== correctVal) distractors.add(String(val));
     }
   }
+  
+  // A common mistake is just entering the digit itself instead of the value
   if (String(digit) !== String(correctVal)) distractors.add(String(digit));
   // Add some random distractor if we don't have enough
-  while (distractors.size < 3) {
-    let extra = digit * Math.pow(10, Math.floor(Math.random() * 4));
+  let loopCount = 0;
+  while (distractors.size < 3 && loopCount < 50) {
+    loopCount++;
+    // If digit is 0, fallback to a random non-zero digit to avoid infinite loop
+    let useDigit = digit === 0 ? Math.floor(Math.random() * 9) + 1 : digit;
+    let extra = useDigit * Math.pow(10, Math.floor(Math.random() * 4));
     if (extra !== correctVal) distractors.add(String(extra));
+  }
+
+  // Fallback if still not enough
+  let extraFallback = 1;
+  while (distractors.size < 3) {
+    if (extraFallback !== correctVal && !distractors.has(String(extraFallback))) {
+      distractors.add(String(extraFallback));
+    }
+    extraFallback++;
   }
 
   return [...distractors].slice(0, 3);
@@ -57,11 +78,12 @@ function genValueDistractors(correctVal, num, position) {
 
 function generateQuestion(type, world, usedNumbers, usedNamesCount) {
   const num = getFreshNumber(world, usedNumbers);
-  const positions = ['thousands', 'hundreds', 'tens', 'ones'];
+  const validPositions = getValidPositions(num);
+  const allPositions = ['thousands', 'hundreds', 'tens', 'ones'];
 
   switch (type) {
     case 'which_place': {
-      const pos = positions[Math.floor(Math.random() * 4)];
+      const pos = validPositions[Math.floor(Math.random() * validPositions.length)];
       const digit = getDigitAt(num, pos);
       return {
         id: `wp_${Date.now()}_${Math.random()}`,
@@ -73,14 +95,14 @@ function generateQuestion(type, world, usedNumbers, usedNamesCount) {
         highlightedPosition: pos, // Custom property for this type
         answer: pos,
         answerType: 'mcq',
-        options: shuffle(positions.map(p => p.charAt(0).toUpperCase() + p.slice(1))),
-        explanation: `In ${num.toLocaleString()}, the digit ${digit} is in the ${pos} place, so its value is ${getValueAt(num, pos).toLocaleString()}.`,
+        options: shuffle(allPositions.map(p => p.charAt(0).toUpperCase() + p.slice(1))),
+        explanation: `In ${num.toLocaleString()}, the digit ${digit} is in the ${pos} place.`,
         difficulty: world.difficulty,
         hasZero: String(num).includes('0'),
       };
     }
     case 'whats_worth': {
-      const pos = positions[Math.floor(Math.random() * 4)];
+      const pos = validPositions[Math.floor(Math.random() * validPositions.length)];
       const correctVal = getValueAt(num, pos);
       const distractors = genValueDistractors(correctVal, num, pos);
       return {
@@ -146,7 +168,7 @@ function generateQuestion(type, world, usedNumbers, usedNamesCount) {
       };
     }
     case 'missing_digit': {
-      const pos = positions[Math.floor(Math.random() * 4)];
+      const pos = validPositions[Math.floor(Math.random() * validPositions.length)];
       const digit = getDigitAt(num, pos);
       return {
         id: `md_${Date.now()}_${Math.random()}`,
@@ -197,7 +219,7 @@ function generateQuestion(type, world, usedNumbers, usedNamesCount) {
       };
     }
     case 'true_false': {
-      const pos = positions[Math.floor(Math.random() * 4)];
+      const pos = validPositions[Math.floor(Math.random() * validPositions.length)];
       const correctVal = getValueAt(num, pos);
       const isTrue = Math.random() > 0.5;
       let claimVal = correctVal;
@@ -222,7 +244,7 @@ function generateQuestion(type, world, usedNumbers, usedNamesCount) {
     }
     case 'word_problem': {
       const name = pickName(GLOBAL_NAMES, usedNamesCount);
-      const pos = positions[Math.floor(Math.random() * 4)];
+      const pos = validPositions[Math.floor(Math.random() * validPositions.length)];
       const template = CONTEXT_TEMPLATES[Math.floor(Math.random() * CONTEXT_TEMPLATES.length)];
       const question = template(name, num, pos);
       const digit = getDigitAt(num, pos);
@@ -234,7 +256,7 @@ function generateQuestion(type, world, usedNumbers, usedNamesCount) {
         question,
         answer: String(digit),
         answerType: 'number_pad',
-        explanation: `In ${num.toLocaleString()}, the ${pos} digit is ${digit}, which has a value of ${getValueAt(num, pos).toLocaleString()}.`,
+        explanation: `In ${num.toLocaleString()}, the ${pos} digit is ${digit}.`,
         difficulty: world.difficulty,
         hasZero: String(num).includes('0'),
       };

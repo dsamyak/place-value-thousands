@@ -14,27 +14,42 @@ function Visual({ question }) {
     // Highlight only the specific digit for the place value
     // This is simple: just color the digit in question.
     // Better way:
+    let digitIndex = 0;
+    const charStrNoCommas = numStr.replace(/,/g, '');
+
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0', fontSize: '3rem', fontWeight: 'bold', fontFamily: 'var(--font-display)', letterSpacing: '4px' }}>
-        {numStr.split('').map((char, i) => {
-          if (char === ',') return <span key={i}>{char}</span>;
-          // Determine position from right (0 = ones, 1 = tens, etc, ignoring commas)
-          const charStrNoCommas = numStr.replace(/,/g, '');
-          const idx = charStrNoCommas.indexOf(char);
-          const posMap = { 3: 'thousands', 2: 'hundreds', 1: 'tens', 0: 'ones' };
-          const p = posMap[charStrNoCommas.length - 1 - idx]; 
-          // Note: indexOf might be buggy if digits repeat. Let's do it right.
-        })}
-        {/* Simpler way: just show the display, and maybe highlight the whole thing, but let's just make it big and colorful */}
-        <div style={{ 
-          background: 'rgba(255,255,255,0.1)', 
-          padding: '12px 32px', 
-          borderRadius: '16px',
-          border: `2px solid ${color}`,
-          boxShadow: `0 0 20px ${color}40`,
-          color: color
-        }}>
-          {question.display}
+      <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0', fontSize: '3.5rem', fontWeight: 'bold', fontFamily: 'var(--font-display)', letterSpacing: '4px' }}>
+        <div style={{ display: 'flex', background: 'rgba(255,255,255,0.05)', padding: '16px 40px', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.1)', alignItems: 'center' }}>
+          {numStr.split('').map((char, i) => {
+            if (char === ',') {
+              return <span key={i} style={{ color: 'var(--text-muted)', margin: '0 4px' }}>{char}</span>;
+            }
+            
+            const placeFromRight = charStrNoCommas.length - 1 - digitIndex;
+            digitIndex++;
+            
+            const posMap = { 3: 'thousands', 2: 'hundreds', 1: 'tens', 0: 'ones' };
+            const charPos = posMap[placeFromRight];
+            const isHighlighted = charPos === posName;
+            
+            return (
+              <span 
+                key={i} 
+                style={{
+                  color: isHighlighted ? color : 'white',
+                  textShadow: isHighlighted ? `0 0 15px ${color}` : 'none',
+                  transform: isHighlighted ? 'scale(1.15)' : 'scale(1)',
+                  display: 'inline-block',
+                  transition: 'all 0.3s ease',
+                  margin: '0 4px',
+                  borderBottom: isHighlighted ? `4px solid ${color}` : '4px solid transparent',
+                  paddingBottom: '4px'
+                }}
+              >
+                {char}
+              </span>
+            );
+          })}
         </div>
       </div>
     );
@@ -57,6 +72,11 @@ export default function QuestionRenderer({ question, onAnswer, disabled }) {
   const [selectedOption, setSelectedOption] = useState(null);
   const [padInput, setPadInput] = useState('');
 
+  React.useEffect(() => {
+    setPadInput('');
+    setSelectedOption(null);
+  }, [question]);
+
   const handleOptionClick = useCallback((option) => {
     if (disabled) return;
     setSelectedOption(option);
@@ -69,12 +89,18 @@ export default function QuestionRenderer({ question, onAnswer, disabled }) {
 
   const handleNumClick = (n) => {
     if (disabled) return;
+    if (padInput.length >= 6) return;
     const newVal = padInput + n;
     setPadInput(newVal);
     if (newVal === String(question.correctAnswer)) {
       handleOptionClick(newVal);
-    } else if (newVal.length >= String(question.correctAnswer).length) {
-      handleOptionClick(newVal);
+    }
+  };
+
+  const handleCheck = () => {
+    if (disabled || !padInput) return;
+    handleOptionClick(padInput);
+    if (padInput !== String(question.correctAnswer)) {
       setTimeout(() => setPadInput(''), 600);
     }
   };
@@ -113,12 +139,14 @@ export default function QuestionRenderer({ question, onAnswer, disabled }) {
             {padInput || '?'}
           </div>
           <div className="number-pad">
-            {[1,2,3,4,5,6,7,8,9,0].map(n => (
+            {[1,2,3,4,5,6,7,8,9].map(n => (
               <button key={n} className="num-pad-btn" onClick={() => handleNumClick(String(n))} disabled={disabled}>
                 {n}
               </button>
             ))}
-            <button className="num-pad-btn" onClick={() => setPadInput('')} disabled={disabled} style={{ gridColumn: 'span 2' }}>Clear</button>
+            <button className="num-pad-btn" onClick={() => setPadInput('')} disabled={disabled}>C</button>
+            <button className="num-pad-btn" onClick={() => handleNumClick('0')} disabled={disabled}>0</button>
+            <button className="num-pad-btn" style={{ background: 'var(--green)', color: 'white' }} onClick={handleCheck} disabled={disabled}>✓</button>
           </div>
         </div>
       )}

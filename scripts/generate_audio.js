@@ -52,22 +52,22 @@ const phrases = [
   // STORY — Full narrationScript per panel
   // (used by phases/StoryPhase.jsx via storyContent.js)
   // ═══════════════════════════════════════════════
-  { text: "Priya, Kai, and Liam were on a school trip to the Number Museum in Singapore. Look! gasped Priya, pointing at a giant glowing display. That number is three thousand, four hundred and seventy-two! It's huge, said Kai. But what does each part mean?", style: 'statement' },
+  { text: "Sarah, Mike, and John were on a school trip to the Science Museum in Chicago. Look! gasped Sarah, pointing at a giant glowing display. That number is three thousand, four hundred and seventy-two! It's huge, said Mike. But what does each part mean?", style: 'statement' },
   { text: "A friendly robot guide rolled up to them. Welcome, explorers! Every digit in a number lives in its own house. Four glowing houses appeared: Thousands, Hundreds, Tens, and Ones. The house a digit lives in tells you its value!", style: 'statement' },
-  { text: "Let's break down three thousand four hundred and seventy-two, said the robot. The digit 3 lives in the Thousands house, so it's worth three thousand! That's like three thousand mangoes from a Mumbai market! laughed Priya. And the 4 in the Hundreds house is worth four hundred!", style: 'emphasis' },
-  { text: "The 7 in the Tens house is worth seventy, continued the robot. And the 2 in the Ones house is worth just two! So it all adds up! said Kai excitedly. Three thousand plus four hundred plus seventy plus two equals three thousand, four hundred and seventy-two! That's like counting cherry blossoms in Tokyo!", style: 'emphasis' },
-  { text: "Wait, said Liam. My dad says our village in Nairobi has four thousand and eight people. What about the zeros? The robot smiled. Zero means nobody lives in that house. But the house must still exist, or all the other digits would get confused! So zero is a placeholder! said Liam. It holds the spot even if it's empty!", style: 'question' },
-  { text: "I get it! shouted Kai. The Tokyo Skytree is six hundred and thirty-four metres tall. That's 6 hundreds, 3 tens, and 4 ones! And my school in Mumbai has two thousand, three hundred and fifty students, added Priya. That's 2 thousands, 3 hundreds, 5 tens, and 0 ones! The three friends cheered. They had cracked the code of big numbers!", style: 'celebration' },
+  { text: "Let's break down three thousand, four hundred and seventy-two, said the robot. The digit 3 lives in the Thousands house, so it's worth three thousand! That's like three thousand apples from a New York market! laughed Sarah. And the 4 in the Hundreds house is worth four hundred!", style: 'emphasis' },
+  { text: "The 7 in the Tens house is worth seventy, continued the robot. And the 2 in the Ones house is worth just two! So it all adds up! said Mike excitedly. Three thousand plus four hundred plus seventy plus two equals three thousand, four hundred and seventy-two! That's like counting apple trees in Washington!", style: 'emphasis' },
+  { text: "Wait, said John. My dad says our town in Texas has four thousand and eight people. What about the zeros? The robot smiled. Zero means nobody lives in that house. But the house must still exist, or all the other digits would get confused! So zero is a placeholder! said John. It holds the spot even if it's empty!", style: 'question' },
+  { text: "I get it! shouted Mike. A skyscraper in Chicago is six hundred and thirty-four feet tall. That's 6 hundreds, 3 tens, and 4 ones! And my school in Boston has two thousand, three hundred and fifty students, added Sarah. That's 2 thousands, 3 hundreds, 5 tens, and 0 ones! The three friends cheered. They had cracked the code of big numbers!", style: 'celebration' },
 
   // ═══════════════════════════════════════════════
   // STORY — Individual narration segments
   // (used by components/StoryPhase.jsx via narration.js getStoryNarration)
   // ═══════════════════════════════════════════════
   // Panel 0
-  { text: "Priya, Kai, and Liam were on a school trip to the Number Museum in Singapore.", style: 'statement' },
-  { text: "Look! gasped Priya, pointing at a giant glowing display.", style: 'statement' },
+  { text: "Sarah, Mike, and John were on a school trip to the Science Museum in Chicago.", style: 'statement' },
+  { text: "Look! gasped Sarah, pointing at a giant glowing display.", style: 'statement' },
   { text: "That number is three thousand, four hundred and seventy-two!", style: 'emphasis' },
-  { text: "It's huge, said Kai. But what does each part mean?", style: 'question' },
+  { text: "It's huge, said Mike. But what does each part mean?", style: 'question' },
   // Panel 1
   { text: "A friendly robot guide rolled up to them.", style: 'statement' },
   { text: "Welcome, explorers! Every digit in a number lives in its own house.", style: 'statement' },
@@ -76,23 +76,23 @@ const phrases = [
   // Panel 2
   { text: "Let's break down three thousand, four hundred and seventy-two, said the robot.", style: 'statement' },
   { text: "The digit three lives in the Thousands house, so it's worth three thousand!", style: 'emphasis' },
-  { text: "That's like three thousand mangoes from a Mumbai market! laughed Priya.", style: 'statement' },
+  { text: "That's like three thousand apples from a New York market! laughed Sarah.", style: 'statement' },
   { text: "And the four in the Hundreds house is worth four hundred!", style: 'emphasis' },
   // Panel 3
   { text: "The seven in the Tens house is worth seventy.", style: 'statement' },
   { text: "And the two in the Ones house is worth just two!", style: 'statement' },
-  { text: "So it all adds up! said Kai excitedly.", style: 'encouragement' },
+  { text: "So it all adds up! said Mike excitedly.", style: 'encouragement' },
   { text: "Three thousand plus four hundred plus seventy plus two equals three thousand, four hundred and seventy-two!", style: 'emphasis' },
-  { text: "That's like counting cherry blossoms in Tokyo!", style: 'statement' },
+  { text: "That's like counting apple trees in Washington!", style: 'statement' },
   // Panel 4
-  { text: "Wait, said Liam. My dad says our village in Nairobi has four thousand and eight people. What about the zeros?", style: 'question' },
+  { text: "Wait, said John. My dad says our town in Texas has four thousand and eight people. What about the zeros?", style: 'question' },
   { text: "The robot smiled. Zero means nobody lives in that house.", style: 'statement' },
   { text: "But the house must still exist, or all the other digits would get confused!", style: 'emphasis' },
-  { text: "So zero is a placeholder! said Liam. It holds the spot even if it's empty!", style: 'statement' },
+  { text: "So zero is a placeholder! said John. It holds the spot even if it's empty!", style: 'statement' },
   // Panel 5
-  { text: "I get it! shouted Kai. The Tokyo Skytree is six hundred and thirty-four metres tall.", style: 'encouragement' },
+  { text: "I get it! shouted Mike. A skyscraper in Chicago is six hundred and thirty-four feet tall.", style: 'encouragement' },
   { text: "That's six hundreds, three tens, and four ones!", style: 'statement' },
-  { text: "And my school in Mumbai has two thousand, three hundred and fifty students, added Priya.", style: 'statement' },
+  { text: "And my school in Boston has two thousand, three hundred and fifty students, added Sarah.", style: 'statement' },
   { text: "That's two thousands, three hundreds, five tens, and zero ones!", style: 'emphasis' },
   { text: "The three friends cheered. They had cracked the code of big numbers!", style: 'celebration' },
 

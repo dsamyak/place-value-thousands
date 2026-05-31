@@ -225,7 +225,7 @@ function Station3({ audioEnabled, onComplete }) {
     const names = { th: 'Thousands', h: 'Hundreds', t: 'Tens', o: 'Ones' };
     const p = places[randInt(0, 3)];
     const digit = p === 'th' ? th : p === 'h' ? h : p === 't' ? t : o;
-    const missingVal = Math.random() > 0.5; // If true, ask for value (e.g. 300). If false, ask for digit (e.g. 3)
+    const missingVal = false; // Always ask for the digit to match "Missing Digit" title
     const val = digit * (p === 'th' ? 1000 : p === 'h' ? 100 : p === 't' ? 10 : 1);
 
     setData({ num, place: names[p], digit, val, missingVal });
@@ -244,20 +244,33 @@ function Station3({ audioEnabled, onComplete }) {
 
   const handleNumClick = (n) => {
     if (done) return;
+    if (inputVal.length >= 6) return;
     const newVal = inputVal + n;
     setInputVal(newVal);
     sounds.click();
 
-    if (parseInt(newVal) === targetAns) {
+    if (parseInt(newVal, 10) === targetAns) {
       setDone(true);
       sounds.correct();
       narRef.current?.cancel();
       if (audioEnabled) {
         narRef.current = narrate([celebrate(`Yes! You found it!`)], true);
       }
-    } else if (newVal.length >= String(targetAns).length) {
+    }
+  };
+
+  const handleCheck = () => {
+    if (done || !inputVal) return;
+    if (parseInt(inputVal, 10) === targetAns) {
+      setDone(true);
+      sounds.correct();
+      narRef.current?.cancel();
+      if (audioEnabled) {
+        narRef.current = narrate([celebrate(`Yes! You found it!`)], true);
+      }
+    } else {
       sounds.wrong();
-      setTimeout(() => setInputVal(''), 500);
+      setInputVal('');
     }
   };
 
@@ -278,16 +291,17 @@ function Station3({ audioEnabled, onComplete }) {
       </div>
 
       {/* Number Pad */}
-      {!done && (
-        <div className="number-pad">
-          {[1,2,3,4,5,6,7,8,9,0].map(n => (
-            <button key={n} className="num-pad-btn" onClick={() => handleNumClick(String(n))}>
-              {n}
-            </button>
-          ))}
-          <button className="num-pad-btn" onClick={() => setInputVal('')} style={{ gridColumn: 'span 2' }}>Clear</button>
-        </div>
-      )}
+      {!done && <div className="number-pad">
+            {[1,2,3,4,5,6,7,8,9].map(n => (
+              <button key={n} className="num-pad-btn" onClick={() => handleNumClick(String(n))}>
+                {n}
+              </button>
+            ))}
+            <button className="num-pad-btn" onClick={() => { sounds.click(); setInputVal(''); }}>C</button>
+            <button className="num-pad-btn" onClick={() => handleNumClick('0')}>0</button>
+            <button className="num-pad-btn" style={{ background: 'var(--green)', color: 'white' }} onClick={handleCheck}>✓</button>
+          </div>
+      }
 
       {done && (
         <div style={{ marginTop: 24, animation: 'bounceIn 0.5s' }}>
