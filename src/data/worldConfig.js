@@ -20,7 +20,7 @@ export const WORLD_CONFIG = [
   {
     index: 3, name: 'Value Village',
     range: [1000, 5999],
-    types: ['more_or_less','whats_worth','build_it','true_false'],
+    types: ['more_or_less','whats_worth','build_it','true_false','digit_placement'],
     difficulty: 'medium', allowZero: false, timedMode: false
   },
   {
@@ -32,7 +32,7 @@ export const WORLD_CONFIG = [
   {
     index: 5, name: 'Zero Zone',
     range: [1000, 7999],
-    types: ['more_or_less','whats_worth','true_false','missing_digit'],
+    types: ['more_or_less','whats_worth','true_false','missing_digit','digit_placement'],
     difficulty: 'medium', allowZero: true, timedMode: false,
     zeroConstraint: { minZeros: 1, maxZeros: 1 }
   },
@@ -54,7 +54,7 @@ export const WORLD_CONFIG = [
     range: [1000, 9999],
     types: ['more_or_less','whats_worth','build_it','expanded_form',
             'standard_form','missing_digit','number_in_words',
-            'words_to_number','true_false','word_problem'],
+            'words_to_number','true_false','word_problem','digit_placement'],
     difficulty: 'hard', allowZero: true, timedMode: false
   },
   {
@@ -62,7 +62,7 @@ export const WORLD_CONFIG = [
     range: [1000, 9999],
     types: ['more_or_less','whats_worth','build_it','expanded_form',
             'standard_form','missing_digit','number_in_words',
-            'words_to_number','true_false','word_problem'],
+            'words_to_number','true_false','word_problem','digit_placement'],
     difficulty: 'challenge', allowZero: true, timedMode: true, timeLimit: 10
   },
 ];

@@ -268,6 +268,40 @@ function generateQuestion(type, world, usedNumbers, usedNamesCount) {
         hasZero: String(num).includes('0'),
       };
     }
+    case 'digit_placement': {
+      const allP = ['thousands', 'hundreds', 'tens', 'ones'];
+      const placesToUse = shuffle(allP).slice(0, Math.floor(Math.random() * 3) + 2); 
+      
+      const assignments = {};
+      placesToUse.forEach(p => {
+        if (p === 'thousands') assignments[p] = Math.floor(Math.random() * 9) + 1;
+        else assignments[p] = Math.floor(Math.random() * 9) + 1;
+      });
+
+      let finalNum = 0;
+      if (assignments['thousands']) finalNum += assignments['thousands'] * 1000;
+      if (assignments['hundreds']) finalNum += assignments['hundreds'] * 100;
+      if (assignments['tens']) finalNum += assignments['tens'] * 10;
+      if (assignments['ones']) finalNum += assignments['ones'] * 1;
+
+      const parts = placesToUse.map(p => `${assignments[p]} in the ${p} place`);
+      let combined = "";
+      if (parts.length === 2) combined = `${parts[0]} and ${parts[1]}`;
+      else combined = parts.slice(0, -1).join(', ') + `, and ${parts[parts.length - 1]}`;
+
+      return {
+        id: `dp_${Date.now()}_${Math.random()}`,
+        type,
+        number: finalNum,
+        display: '',
+        question: `If you put ${combined}, what number do you get?`,
+        answer: String(finalNum),
+        answerType: 'number_pad',
+        explanation: `Putting ${combined} gives you ${finalNum.toLocaleString()}.`,
+        difficulty: world.difficulty,
+        hasZero: String(finalNum).includes('0'),
+      };
+    }
     default:
       throw new Error(`Unknown question type: ${type}`);
   }
