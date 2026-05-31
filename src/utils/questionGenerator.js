@@ -82,21 +82,28 @@ function generateQuestion(type, world, usedNumbers, usedNamesCount) {
   const allPositions = ['thousands', 'hundreds', 'tens', 'ones'];
 
   switch (type) {
-    case 'which_place': {
-      const pos = validPositions[Math.floor(Math.random() * validPositions.length)];
-      const digit = getDigitAt(num, pos);
+    case 'more_or_less': {
+      let isMore = Math.random() > 0.5;
+      let amount;
+      if (num >= 1000) amount = [1, 10, 100, 1000][Math.floor(Math.random() * 4)];
+      else if (num >= 100) amount = [1, 10, 100][Math.floor(Math.random() * 3)];
+      else amount = [1, 10][Math.floor(Math.random() * 2)];
+      
+      let ans = isMore ? num + amount : num - amount;
+      // Prevent negative or over 9999
+      if (ans < 0 || ans > 9999) {
+        isMore = !isMore;
+        ans = isMore ? num + amount : num - amount;
+      }
       return {
-        id: `wp_${Date.now()}_${Math.random()}`,
+        id: `mol_${Date.now()}_${Math.random()}`,
         type,
         number: num,
         display: num.toLocaleString(),
-        question: `What place is the highlighted digit in?`,
-        highlightedDigit: digit,
-        highlightedPosition: pos, // Custom property for this type
-        answer: pos,
-        answerType: 'mcq',
-        options: shuffle(allPositions.map(p => p.charAt(0).toUpperCase() + p.slice(1))),
-        explanation: `In ${num.toLocaleString()}, the digit ${digit} is in the ${pos} place.`,
+        question: `What is ${amount.toLocaleString()} ${isMore ? 'more' : 'less'} than this number?`,
+        answer: String(ans),
+        answerType: 'number_pad',
+        explanation: `${amount.toLocaleString()} ${isMore ? 'more' : 'less'} than ${num.toLocaleString()} is ${ans.toLocaleString()}.`,
         difficulty: world.difficulty,
         hasZero: String(num).includes('0'),
       };
