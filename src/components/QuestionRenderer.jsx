@@ -133,7 +133,7 @@ export default function QuestionRenderer({ question, onAnswer, disabled }) {
         </div>
       )}
 
-      {question.type === 'number_pad' && !question.options && (
+      {question.answerType === 'number_pad' && !question.options && (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <div className={`blank-input ${disabled && padInput === String(question.correctAnswer) ? 'correct' : disabled ? 'wrong' : padInput ? 'filled' : ''}`} style={{ marginBottom: 24, padding: '12px 32px', minHeight: 60, minWidth: 100 }}>
             {padInput || '?'}

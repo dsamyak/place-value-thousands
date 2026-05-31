@@ -10,6 +10,7 @@ export function generateSessionQuestions() {
       options: q.options || null,
       correctAnswer: q.answer,
       type: q.type,
+      answerType: q.answerType,
       display: q.display,
       highlightedDigit: q.highlightedDigit,
       highlightedPosition: q.highlightedPosition,
